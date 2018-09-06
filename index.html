@@ -93,7 +93,7 @@
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
 
-    //填加事件监听，嫌样式难看可以自己调
+    //填加事件监听
     document.getElementById('files').addEventListener('change', handleFileSelect, false);
     function handleFileSelect(evt) {
         var files = evt.target.files; // FileList object
