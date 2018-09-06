@@ -4,11 +4,10 @@
 	<meta charset="utf-8">
 	<!-- 引入 ECharts 文件 -->
 	<script src="echarts.common.min.js"></script>
-    <script src="./PapaParse-4.6.0/papaparse.min.js"></script>
 </head>
 <body>
 	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-	
+	<input type="file" id="files" name="files"/>
 
 	<div id="main" style="width: 600px;height:400px;"></div>
 	<script type="text/javascript">
@@ -91,14 +90,29 @@
         }
         ]
     };
-    Papa.parse("./data.csv", {
-        download: true,
-        complete: function(results) {
-            option['series']['0']['data'] = results.data;
-           myChart.setOption(option);
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
 
+    //填加事件监听，嫌样式难看可以自己调
+    document.getElementById('files').addEventListener('change', handleFileSelect, false);
+    function handleFileSelect(evt) {
+        var files = evt.target.files; // FileList object
+				window.alert(files);
+        for (var i = 0, f; f = files[i]; i++) {
+        	var reader = new FileReader();
+        	reader.onload = (function (theFile) {
+        		return function (e) {
+        			//读取选择的txt文件并赋值给option数组
+        			//eval()把读取出来的字符串转化成数组
+                    option['series']['0']['data'] = eval('['+e.target.result+']');
+                    myChart.setOption(option);
+                };
+            })(f);
+            reader.readAsText(f);
         }
-    });
+    }
+
+
     </script>
 </body>
 </html>
